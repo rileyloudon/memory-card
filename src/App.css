@@ -1,0 +1,60 @@
+:root {
+  --black: #2c2c2c;
+  --blue: #058ed9;
+  --white: #f4ebd9;
+  --brown: #a39a92;
+}
+
+.memory-card {
+  color: var(--white);
+}
+
+/* Scoreboard */
+.scoreboard {
+  padding-top: 25px;
+  width: fit-content;
+  margin: auto;
+}
+
+.current-score {
+  margin: 0;
+  margin-bottom: 12.5px;
+}
+
+.high-score {
+  width: fit-content;
+  margin: auto;
+}
+/* Gameboard */
+.gameboard {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+/* Card */
+.card {
+  cursor: pointer;
+  display: inline-block;
+  border: 1px solid var(--white);
+  border-radius: 15px;
+  width: 200px;
+  padding: 15px;
+  margin: 25px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+.card img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.card p {
+  width: fit-content;
+  padding-top: 15px;
+  margin: auto;
+  text-transform: capitalize;
+}
