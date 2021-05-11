@@ -27,19 +27,28 @@
 }
 /* Gameboard */
 .gameboard {
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: row wrap;
 }
 
+.gameboard.loading {
+  margin-top: 25px;
+}
+
+.gameboard.error {
+  margin-top: 25px;
+}
+
 /* Card */
 .card {
+  user-select: none;
   cursor: pointer;
   display: inline-block;
   border: 1px solid var(--white);
   border-radius: 15px;
-  width: 200px;
+  width: 110px;
   padding: 15px;
   margin: 25px;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048),
