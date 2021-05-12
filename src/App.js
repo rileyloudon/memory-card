@@ -12,30 +12,19 @@ function App() {
 
   const [allPokemon, setAllPokemon] = useState([]);
   const [allPokemonNumbers, setAllPokemonNumbers] = useState([]);
+  const [remainingPokemonNumbers, setRemainingPokemonNumbers] = useState([]);
   const [currentSet, setCurrentSet] = useState([]);
 
   const randomizeSet = (set) => {
     // https://stackoverflow.com/a/54814423/12843016
+    let tempSet = set;
 
-    let temp = set;
-
-    for (let i = temp.length - 1; i > 0; i--) {
+    for (let i = tempSet.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
-      [temp[i], temp[j]] = [temp[j], temp[i]];
+      [tempSet[i], tempSet[j]] = [tempSet[j], tempSet[i]];
     }
 
-    setCurrentSet(temp);
-  };
-
-  const createNewSet = () => {
-    const temp = allPokemonNumbers;
-    const tempArray = [];
-
-    for (let i = 0; i < 10; i++) {
-      tempArray.push([parseInt(temp.splice(i, 1)), false]);
-    }
-    console.log(allPokemonNumbers);
-    setCurrentSet(tempArray);
+    setCurrentSet(tempSet);
   };
 
   const handleClick = (i) => {
@@ -49,39 +38,33 @@ function App() {
       randomizeSet(tempCurrentSet);
 
       setCurrentScore(tempCurrentScore);
+
       if (currentScore % currentSet.length === currentSet.length - 1) {
-        createNewSet();
+        const removeCurrentSet = remainingPokemonNumbers.slice(currentSet.length);
+        setRemainingPokemonNumbers(removeCurrentSet);
       }
     } else {
       if (tempCurrentScore > highScore) setHighScore(tempCurrentScore);
-      setCurrentScore(0);
 
       tempCurrentSet.forEach((item) => (item[1] = false));
-
       randomizeSet(tempCurrentSet);
+
+      setCurrentScore(0);
+      setRemainingPokemonNumbers(allPokemonNumbers);
     }
   };
 
   useEffect(() => {
+    let pokemonNumbers = [...Array(386).keys()];
+    randomizeSet(pokemonNumbers);
+
     setCurrentScore(0);
+    setRemainingPokemonNumbers(pokemonNumbers);
+    setAllPokemonNumbers(pokemonNumbers);
 
-    let temp = [...Array(151).keys()];
-    randomizeSet(temp);
+    console.log('PokeAPI Called');
 
-    const tempArray = [];
-
-    for (let i = 0; i < 10; i++) {
-      tempArray.push([parseInt(temp.splice(i, 1)), false]);
-    }
-
-    setAllPokemonNumbers(temp);
-    setCurrentSet(tempArray);
-  }, []);
-
-  useEffect(() => {
-    console.log('Pokemon API Called');
-
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+    fetch('https://pokeapi.co/api/v2/pokemon?limit=386')
       .then((res) => res.json())
       .then(
         (pokemon) => {
@@ -94,11 +77,23 @@ function App() {
       );
   }, []);
 
+  useEffect(() => {
+    const createNewSet = () => {
+      const newSet = [];
+      for (let i = 0; i < 10; i++) {
+        newSet.push([parseInt(remainingPokemonNumbers.slice(i, i + 1)), false]);
+      }
+      setCurrentSet(newSet);
+    };
+
+    createNewSet();
+  }, [remainingPokemonNumbers]);
+
   if (error) {
     return (
       <div className='memory-card'>
         <Scoreboard current={currentScore} highest={highScore} />
-        <div className='gameboard error'>Oops, error: {error.message}</div>
+        <div className='gameboard error'>Error Loading Pokeon - {error.message}</div>
       </div>
     );
   } else if (!isLoaded) {
