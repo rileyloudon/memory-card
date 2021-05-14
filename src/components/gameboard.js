@@ -1,16 +1,16 @@
 import Card from './card';
 
 const Gameboard = (props) => {
-  const { allPokemon, currentSet } = props;
+  const { allPokemon, currentSet, handleClick } = props;
 
   const renderPokemon = (number, i) => {
     return (
       <Card
-        key={allPokemon.results[number[0]].name}
+        key={allPokemon[number[0]].name}
         pokemonNumber={number[0] + 1}
-        pokemonName={allPokemon.results[number[0]].name}
+        pokemonName={allPokemon[number[0]].name}
         i={i}
-        onClick={props.onClick}
+        handleClick={handleClick}
       />
     );
   };
