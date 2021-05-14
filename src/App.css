@@ -1,12 +1,13 @@
 :root {
   --black: #2c2c2c;
-  --blue: #058ed9;
   --white: #f4ebd9;
-  --brown: #a39a92;
+  --border: #52504f;
+  /* --blue: #058ed9; */
 }
 
 .memory-card {
   color: var(--white);
+  height: 100vh;
 }
 
 /* Scoreboard */
@@ -41,12 +42,55 @@
   margin-top: 25px;
 }
 
+.gameboard.complete {
+  width: 90vw;
+  max-width: 600px;
+  margin: auto;
+  margin-top: 25px;
+  padding-bottom: 25px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+.gameboard.complete div {
+  text-align: center;
+}
+
+.gameboard.complete img {
+  max-height: 100%;
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+
+.gameboard.complete h2 {
+  font-size: 32px;
+  width: fit-content;
+  margin: auto;
+}
+
+.gameboard.complete p {
+  font-size: 24px;
+}
+
+.gameboard.complete button {
+  cursor: pointer;
+  color: var(--white);
+  border: 1px solid var(--white);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 18px;
+  background-color: transparent;
+}
+
 /* Card */
 .card {
   user-select: none;
   cursor: pointer;
   display: inline-block;
-  border: 1px solid var(--white);
+  border: 1px solid var(--border);
   border-radius: 15px;
   width: 110px;
   padding: 15px;
@@ -61,9 +105,31 @@
   max-height: 100%;
 }
 
-.card p {
+.card figcaption {
   width: fit-content;
   padding-top: 15px;
   margin: auto;
   text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+  .gameboard.complete h2 {
+    font-size: 26px;
+    width: fit-content;
+    margin: auto;
+  }
+
+  .gameboard.complete p {
+    font-size: 20px;
+  }
+
+  .gameboard.complete button {
+    cursor: pointer;
+    color: var(--white);
+    border: 1px solid var(--white);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 16px;
+    background-color: transparent;
+  }
 }
