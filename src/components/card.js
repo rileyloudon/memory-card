@@ -1,14 +1,14 @@
 const Card = (props) => {
-  const { pokemonNumber, pokemonName, i, onClick } = props;
+  const { pokemonNumber, pokemonName, i, handleClick } = props;
 
   return (
-    <div className='card' onClick={() => onClick(i)}>
+    <figure className='card' onClick={() => handleClick(i)}>
       <img
         src={`https://pokeres.bastionbot.org/images/pokemon/${pokemonNumber}.png`}
         alt='{pokemonName}'
       />
-      <p>{pokemonName}</p>
-    </div>
+      <figcaption>{pokemonName}</figcaption>
+    </figure>
   );
 };
 
