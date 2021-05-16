@@ -32,6 +32,8 @@
   justify-content: center;
   align-items: center;
   flex-flow: row wrap;
+  max-width: 1300px;
+  margin: auto;
 }
 
 .gameboard.loading {
@@ -63,6 +65,7 @@
   max-height: 100%;
   max-width: 100%;
   margin-bottom: 15px;
+  border-radius: 15px 15px 0 0;
 }
 
 .gameboard.complete h2 {
@@ -92,8 +95,7 @@
   display: inline-block;
   border: 1px solid var(--border);
   border-radius: 15px;
-  /* width: 110px; */
-  padding: 15px;
+  padding: 15px 0;
   margin: 25px;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048),
     0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072),
@@ -101,26 +103,89 @@
 }
 
 .card img {
+  padding: 15px;
   width: 175px;
-  /* height: 250px; */
   height: 175px;
-  /* max-width: 100%; */
-  /* max-height: 100%; */
 }
 
 .card figcaption {
   font-size: 20px;
   width: fit-content;
-  padding-top: 15px;
   margin: auto;
   text-transform: capitalize;
 }
 
-@media (max-width: 768px) {
-  .gameboard.complete h2 {
-    font-size: 26px;
+@media (max-width: 1284px) {
+  .card img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .card figcaption {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1160px) {
+  .card img {
+    width: 135px;
+    height: 135px;
+  }
+}
+
+@media (max-width: 1084px) {
+  .card img {
+    width: 125px;
+    height: 125px;
+  }
+
+  .card figcaption {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1035px) {
+  .card img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .card figcaption {
+    margin: 0;
     width: fit-content;
     margin: auto;
+  }
+}
+
+@media (max-width: 960px) {
+  .card {
+    margin: 15px 12px 12px 12px;
+  }
+
+  .card figcaption {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 830px) {
+  .card img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 780px) {
+  .card {
+    margin: 15px 10px 10px 10px;
+  }
+
+  .card img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .gameboard.complete h2 {
+    font-size: 26px;
   }
 
   .gameboard.complete p {
@@ -128,16 +193,41 @@
   }
 
   .gameboard.complete button {
-    cursor: pointer;
-    color: var(--white);
-    border: 1px solid var(--white);
-    border-radius: 8px;
-    padding: 8px;
     font-size: 16px;
-    background-color: transparent;
   }
 }
 
+@media (max-width: 710px) {
+  .card {
+    margin: 15px 5px 5px 5px;
+  }
+
+  .card img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .card figcaption {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 500px) {
+  .card img {
+    padding: 5px;
+  }
+
+  .card figcaption {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .card img {
+    width: 70px;
+    height: 70px;
+  }
+}
 @media (prefers-color-scheme: light) {
   .memory-card {
     color: var(--black);
