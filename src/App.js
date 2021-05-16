@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Scoreboard from './components/score';
 import Gameboard from './components/gameboard';
+import Win from './components/win';
 import './App.css';
+
+// ADD: Increase currentSet size by 1 every successful board completion(10 -> 11)
+//      or 5/10 every 100?
 
 function App() {
   const [error, setError] = useState(null);
@@ -13,7 +17,10 @@ function App() {
   const [allPokemon, setAllPokemon] = useState([]);
   const [allPokemonNumbers, setAllPokemonNumbers] = useState([]);
   const [remainingPokemonNumbers, setRemainingPokemonNumbers] = useState([]);
+
   const [currentSet, setCurrentSet] = useState([]);
+  const [setNumber, setSetNumber] = useState(1);
+  const [maxSetSize, setMaxSetSize] = useState(5);
 
   const randomizeSet = (set) => {
     // https://stackoverflow.com/a/54814423/12843016
@@ -31,7 +38,7 @@ function App() {
     let tempCurrentScore = currentScore;
     const tempCurrentSet = [...currentSet];
 
-    if (currentSet[i][1] === false || currentScore === 10) {
+    if (currentSet[i][1] === false) {
       tempCurrentSet[i][1] = true;
 
       tempCurrentScore += 1;
@@ -39,79 +46,121 @@ function App() {
 
       setCurrentScore(tempCurrentScore);
 
-      if (currentScore % currentSet.length === currentSet.length - 1) {
+      if (currentSet.every((item) => item[1] === true)) {
         const removeCurrentSet = remainingPokemonNumbers.slice(currentSet.length);
         setRemainingPokemonNumbers(removeCurrentSet);
+
+        let i = setNumber;
+        i++;
+        setSetNumber(i);
+
+        if (setNumber % 2 === 0) {
+          // if remaing pokemon is less than max set size * 2, add remaing pokemon to current set
+          if (maxSetSize < 12) {
+            let size = maxSetSize;
+            size++;
+            setMaxSetSize(size);
+          } else {
+            let size = maxSetSize;
+            size = 15;
+            setMaxSetSize(size);
+          }
+        }
       }
     } else {
-      if (tempCurrentScore > highScore) setHighScore(tempCurrentScore);
-
       tempCurrentSet.forEach((item) => (item[1] = false));
       randomizeSet(tempCurrentSet);
 
+      if (tempCurrentScore > highScore) setHighScore(tempCurrentScore);
       setCurrentScore(0);
+      setSetNumber(1);
+      setMaxSetSize(5);
       setRemainingPokemonNumbers(allPokemonNumbers);
     }
   };
 
+  const handleGameReset = () => {
+    setHighScore(currentScore);
+    setCurrentScore(0);
+    setSetNumber(1);
+    setMaxSetSize(5);
+    setRemainingPokemonNumbers(allPokemonNumbers);
+  };
+
   useEffect(() => {
-    let pokemonNumbers = [...Array(386).keys()];
+    let pokemonNumbers = [...Array(151).keys()];
     randomizeSet(pokemonNumbers);
 
     setCurrentScore(0);
+    setSetNumber(1);
+    setMaxSetSize(5);
     setRemainingPokemonNumbers(pokemonNumbers);
     setAllPokemonNumbers(pokemonNumbers);
 
-    console.log('PokeAPI Called');
+    if (localStorage.pokemon) {
+      const savedPokemon = JSON.parse(localStorage.pokemon);
+      setAllPokemon(savedPokemon);
+      setIsLoaded(true);
+    } else {
+      console.log('PokeAPI Called');
 
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=386')
-      .then((res) => res.json())
-      .then(
-        (pokemon) => {
-          setAllPokemon(pokemon);
-          setIsLoaded(true);
-        },
-        (error) => {
-          setError(error);
-        }
-      );
+      fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+        .then((res) => res.json())
+        .then(
+          (pokemon) => {
+            setAllPokemon(pokemon.results);
+            setIsLoaded(true);
+            localStorage.pokemon = JSON.stringify(pokemon.results);
+          },
+          (error) => {
+            setError(error);
+          }
+        );
+    }
   }, []);
 
   useEffect(() => {
-    const createNewSet = () => {
-      const newSet = [];
-      for (let i = 0; i < 10; i++) {
-        newSet.push([parseInt(remainingPokemonNumbers.slice(i, i + 1)), false]);
-      }
-      setCurrentSet(newSet);
-    };
+    const newSet = [];
+    const setSize =
+      remainingPokemonNumbers.length >= maxSetSize
+        ? maxSetSize
+        : remainingPokemonNumbers.length;
 
-    createNewSet();
-  }, [remainingPokemonNumbers]);
+    for (let i = 0; i < setSize; i++) {
+      newSet.push([parseInt(remainingPokemonNumbers.slice(i, i + 1)), false]);
+    }
+
+    setCurrentSet(newSet);
+  }, [maxSetSize, remainingPokemonNumbers]);
 
   if (error) {
     return (
       <div className='memory-card'>
         <Scoreboard current={currentScore} highest={highScore} />
-        <div className='gameboard error'>Error Loading Pokeon - {error.message}</div>
+        <p className='gameboard error'>Error Loading Pokemon - {error.message}</p>
       </div>
     );
   } else if (!isLoaded) {
     return (
       <div className='memory-card'>
         <Scoreboard current={currentScore} highest={highScore} />
-        <div className='gameboard loading'>Loading Pokemon...</div>
+        <p className='gameboard loading'>Loading Pokemon...</p>
       </div>
     );
   } else {
-    return (
+    return remainingPokemonNumbers.length > 0 ? (
       <div className='memory-card'>
         <Scoreboard current={currentScore} highest={highScore} />
         <Gameboard
-          onClick={handleClick}
+          handleClick={handleClick}
           allPokemon={allPokemon}
           currentSet={currentSet}
         />
+      </div>
+    ) : (
+      <div className='memory-card'>
+        <Scoreboard current={currentScore} highest={highScore} />
+        <Win handleGameReset={handleGameReset} />
       </div>
     );
   }
