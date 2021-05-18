@@ -2,7 +2,6 @@
   --black: #2c2c2c;
   --white: #f4ebd9;
   --border: #52504f;
-  /* --blue: #058ed9; */
 }
 
 .memory-card {
@@ -10,9 +9,15 @@
   height: 100vh;
 }
 
+.memory-card h3 {
+  width: fit-content;
+  margin: auto;
+  padding-top: 25px;
+}
+
 /* Scoreboard */
 .scoreboard {
-  padding-top: 25px;
+  padding-top: 12.5px;
   width: fit-content;
   margin: auto;
 }
@@ -96,7 +101,7 @@
   border: 1px solid var(--border);
   border-radius: 15px;
   padding: 15px 0;
-  margin: 25px;
+  margin: 20px;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048),
     0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072),
     0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
@@ -104,26 +109,15 @@
 
 .card img {
   padding: 15px;
-  width: 175px;
-  height: 175px;
+  width: 150px;
+  height: 150px;
 }
 
 .card figcaption {
-  font-size: 20px;
+  font-size: 18px;
   width: fit-content;
   margin: auto;
   text-transform: capitalize;
-}
-
-@media (max-width: 1284px) {
-  .card img {
-    width: 150px;
-    height: 150px;
-  }
-
-  .card figcaption {
-    font-size: 18px;
-  }
 }
 
 @media (max-width: 1160px) {
