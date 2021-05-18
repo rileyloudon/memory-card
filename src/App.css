@@ -39,6 +39,7 @@
   flex-flow: row wrap;
   max-width: 1300px;
   margin: auto;
+  padding-bottom: 25px;
 }
 
 .gameboard.loading {
@@ -152,6 +153,10 @@
 }
 
 @media (max-width: 960px) {
+  .memory-card h3 {
+    padding-top: 15px;
+  }
+
   .card {
     margin: 15px 12px 12px 12px;
   }
@@ -222,6 +227,7 @@
     height: 70px;
   }
 }
+
 @media (prefers-color-scheme: light) {
   .memory-card {
     color: var(--black);
