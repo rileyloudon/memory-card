@@ -3,9 +3,7 @@ import Scoreboard from './components/score';
 import Gameboard from './components/gameboard';
 import Win from './components/win';
 import './App.css';
-
-// ADD: Increase currentSet size by 1 every successful board completion(10 -> 11)
-//      or 5/10 every 100?
+import Instructions from './components/instructions';
 
 function App() {
   const [error, setError] = useState(null);
@@ -45,6 +43,7 @@ function App() {
       randomizeSet(tempCurrentSet);
 
       setCurrentScore(tempCurrentScore);
+      if (tempCurrentScore > highScore) setHighScore(tempCurrentScore);
 
       if (currentSet.every((item) => item[1] === true)) {
         const removeCurrentSet = remainingPokemonNumbers.slice(currentSet.length);
@@ -55,27 +54,23 @@ function App() {
         setSetNumber(i);
 
         if (setNumber % 2 === 0) {
-          // if remaing pokemon is less than max set size * 2, add remaing pokemon to current set
-          if (maxSetSize < 12) {
-            let size = maxSetSize;
-            size++;
-            setMaxSetSize(size);
-          } else {
-            let size = maxSetSize;
-            size = 15;
-            setMaxSetSize(size);
-          }
+          let size = maxSetSize;
+
+          remainingPokemonNumbers.length - maxSetSize * 2 < maxSetSize
+            ? (size = remainingPokemonNumbers.length)
+            : size++;
+
+          setMaxSetSize(size);
         }
       }
     } else {
-      tempCurrentSet.forEach((item) => (item[1] = false));
-      randomizeSet(tempCurrentSet);
-
-      if (tempCurrentScore > highScore) setHighScore(tempCurrentScore);
       setCurrentScore(0);
       setSetNumber(1);
       setMaxSetSize(5);
       setRemainingPokemonNumbers(allPokemonNumbers);
+
+      tempCurrentSet.forEach((item) => (item[1] = false));
+      randomizeSet(tempCurrentSet);
     }
   };
 
@@ -88,7 +83,7 @@ function App() {
   };
 
   useEffect(() => {
-    let pokemonNumbers = [...Array(151).keys()];
+    const pokemonNumbers = [...Array(151).keys()];
     randomizeSet(pokemonNumbers);
 
     setCurrentScore(0);
@@ -136,6 +131,7 @@ function App() {
   if (error) {
     return (
       <div className='memory-card'>
+        <Instructions />
         <Scoreboard current={currentScore} highest={highScore} />
         <p className='gameboard error'>Error Loading Pokemon - {error.message}</p>
       </div>
@@ -143,6 +139,7 @@ function App() {
   } else if (!isLoaded) {
     return (
       <div className='memory-card'>
+        <Instructions />
         <Scoreboard current={currentScore} highest={highScore} />
         <p className='gameboard loading'>Loading Pokemon...</p>
       </div>
@@ -150,6 +147,7 @@ function App() {
   } else {
     return remainingPokemonNumbers.length > 0 ? (
       <div className='memory-card'>
+        <Instructions />
         <Scoreboard current={currentScore} highest={highScore} />
         <Gameboard
           handleClick={handleClick}
@@ -159,6 +157,7 @@ function App() {
       </div>
     ) : (
       <div className='memory-card'>
+        <Instructions />
         <Scoreboard current={currentScore} highest={highScore} />
         <Win handleGameReset={handleGameReset} />
       </div>
