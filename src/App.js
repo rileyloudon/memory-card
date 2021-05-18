@@ -40,7 +40,9 @@ function App() {
       tempCurrentSet[i][1] = true;
 
       tempCurrentScore += 1;
-      randomizeSet(tempCurrentSet);
+      while (currentSet.toString() === tempCurrentSet.toString()) {
+        randomizeSet(tempCurrentSet);
+      }
 
       setCurrentScore(tempCurrentScore);
       if (tempCurrentScore > highScore) setHighScore(tempCurrentScore);
