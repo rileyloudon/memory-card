@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Scoreboard from './components/score';
 import Gameboard from './components/gameboard';
 import Win from './components/win';
-import './App.css';
 import Instructions from './components/instructions';
+import './App.css';
 
 function App() {
   const [error, setError] = useState(null);
@@ -40,12 +40,18 @@ function App() {
       tempCurrentSet[i][1] = true;
 
       tempCurrentScore += 1;
-      while (currentSet.toString() === tempCurrentSet.toString()) {
+      while (
+        currentSet.toString() === tempCurrentSet.toString() &&
+        remainingPokemonNumbers.length > 1
+      ) {
         randomizeSet(tempCurrentSet);
       }
 
       setCurrentScore(tempCurrentScore);
-      if (tempCurrentScore > highScore) setHighScore(tempCurrentScore);
+      if (tempCurrentScore > highScore) {
+        setHighScore(tempCurrentScore);
+        localStorage.savedHighScore = tempCurrentScore;
+      }
 
       if (currentSet.every((item) => item[1] === true)) {
         const removeCurrentSet = remainingPokemonNumbers.slice(currentSet.length);
@@ -77,7 +83,10 @@ function App() {
   };
 
   const handleGameReset = () => {
-    setHighScore(currentScore);
+    if (currentScore > highScore) {
+      setHighScore(currentScore);
+      localStorage.savedHighScore = currentScore;
+    }
     setCurrentScore(0);
     setSetNumber(1);
     setMaxSetSize(5);
@@ -85,10 +94,11 @@ function App() {
   };
 
   useEffect(() => {
-    const pokemonNumbers = [...Array(151).keys()];
+    const pokemonNumbers = [...Array(2).keys()];
     randomizeSet(pokemonNumbers);
 
     setCurrentScore(0);
+    if (localStorage.savedHighScore) setHighScore(localStorage.savedHighScore);
     setSetNumber(1);
     setMaxSetSize(5);
     setRemainingPokemonNumbers(pokemonNumbers);
