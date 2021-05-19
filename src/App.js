@@ -94,7 +94,7 @@ function App() {
   };
 
   useEffect(() => {
-    const pokemonNumbers = [...Array(2).keys()];
+    const pokemonNumbers = [...Array(151).keys()];
     randomizeSet(pokemonNumbers);
 
     setCurrentScore(0);
