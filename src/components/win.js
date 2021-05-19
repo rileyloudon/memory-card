@@ -1,9 +1,11 @@
+import win from '../img/win.jpg';
+
 const Win = (props) => {
   const { handleGameReset } = props;
 
   return (
     <div className='gameboard complete'>
-      <img src='./img/win.jpg' alt='Pokemon Celebration' />
+      <img src={win} alt='Pokemon Celebration' />
       <div>
         <h2>Congratulations!</h2>
         <p>You Win!</p>
