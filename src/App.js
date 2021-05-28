@@ -33,13 +33,11 @@ function App() {
   };
 
   const handleClick = (i) => {
-    let tempCurrentScore = currentScore;
     const tempCurrentSet = [...currentSet];
 
     if (currentSet[i][1] === false) {
       tempCurrentSet[i][1] = true;
 
-      tempCurrentScore += 1;
       while (
         currentSet.toString() === tempCurrentSet.toString() &&
         remainingPokemonNumbers.length > 1
@@ -47,19 +45,17 @@ function App() {
         randomizeSet(tempCurrentSet);
       }
 
-      setCurrentScore(tempCurrentScore);
-      if (tempCurrentScore > highScore) {
-        setHighScore(tempCurrentScore);
-        localStorage.savedHighScore = tempCurrentScore;
+      setCurrentScore(currentScore + 1);
+      if (currentScore + 1 > highScore) {
+        setHighScore(currentScore + 1);
+        localStorage.savedHighScore = currentScore + 1;
       }
 
       if (currentSet.every((item) => item[1] === true)) {
         const removeCurrentSet = remainingPokemonNumbers.slice(currentSet.length);
         setRemainingPokemonNumbers(removeCurrentSet);
 
-        let i = setNumber;
-        i++;
-        setSetNumber(i);
+        setSetNumber(setNumber + 1);
 
         if (setNumber % 2 === 0) {
           let size = maxSetSize;
@@ -87,6 +83,7 @@ function App() {
       setHighScore(currentScore);
       localStorage.savedHighScore = currentScore;
     }
+
     setCurrentScore(0);
     setSetNumber(1);
     setMaxSetSize(5);
